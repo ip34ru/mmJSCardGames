@@ -1,0 +1,11 @@
+.fixed-header-on .header .logo img {
+  max-height: 48px;
+}
+.dropdown > a:before {
+  color: transparent;
+}
+.mm__secondheader_input_search-icon {
+  top: 14px;
+  position: absolute;
+  right: 10px;
+}

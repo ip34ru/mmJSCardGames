@@ -1,0 +1,43 @@
+.mm__mainpage__firstheader_background {
+  background-color: #2e3537 !important;
+}
+.mm__mainpage__firstheader_perls_plus-icon--color {
+  color: #00acee;
+}
+.mm__mainpage__firstheader_pearls_width {
+  width: 50%;
+}
+.mm__mainpage__firstheader_pearls_inline-elements {
+  float: left;
+}
+.mm__mainpage__firstheader_cityselector--no-form-margin {
+  margin: 0;
+}
+.mm__mainpage__firstheader_pearls_icon--margin {
+  margin-top: 4px;
+  margin-right: 4px;
+}
+.mm__mainpage__firstheader_pearls_text--margin {
+  margin-top: 10px;
+  margin-right: 6px;
+}
+.mm__mainpage__firstheader_pearls_button--margin {
+  margin-top: 4px;
+  margin-right: 16px;
+}
+.mm__mainpage__firstheader_pearls_button--color {
+  background-color: #6C6874 !important;
+  border: 1px solid #6C6874 !important;
+}
+.mm__mainpage__firstheader_pearls_button--color:hover,
+.mm__mainpage__firstheader_pearls_button--color:active,
+.mm__mainpage__firstheader_pearls_button--color:focus {
+  background-color: rgba(108, 104, 116, 0.91) !important;
+  border: 1px solid rgba(108, 104, 116, 0.91) !important;
+}
+.mm__mainpage__firstheader_login-registration_button--margin {
+  margin-top: 4px !important;
+}
+.mm__mainpage__firstheader_envelope--lightred-color {
+  color: #d63c42;
+}

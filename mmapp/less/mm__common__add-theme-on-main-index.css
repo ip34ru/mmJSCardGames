@@ -1,0 +1,18 @@
+.mm__common_add-theme-on-main-index__rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.mm__common_add-theme-on-main-index__rating > span {
+  display: inline-block;
+  position: relative;
+}
+.mm__common_add-theme-on-main-index__rating > span:hover:before,
+.mm__common_add-theme-on-main-index__rating > span:hover ~ span:before {
+  font-family: "FontAwesome";
+  font-size: 3em;
+  color: #f0c02a;
+  content: "\f005";
+  position: absolute;
+  cursor: pointer;
+  top: -11px;
+}

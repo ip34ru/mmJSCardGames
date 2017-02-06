@@ -1,0 +1,18 @@
+.mm__userprofile_infoblock {
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+}
+.mm__userprofile_digits-info {
+  font-weight: 700;
+}
+.mm__userprofile_errormessage--background {
+  background-color: #fc7258;
+  color: #ffffff;
+}
+.mm__userprofile_avatar {
+  margin-bottom: 10px;
+}
+.mm__userprofile_mandatory_field--asteriks-color {
+  color: #fc7258;
+}

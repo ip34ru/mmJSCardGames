@@ -1,0 +1,59 @@
+// styles for mm__mainpage__waves_beetween_mainbanner_important =======
+
+//variables
+
+//variables
+
+//imports
+@import "mixins";
+//imports
+
+//styles
+.mm__mainpage__waves_after_mainbanner {
+    position: relative;
+}
+
+.mm__mainpage__waves_after_mainbanner--bottom-background-div {
+    background-color: #00C0CB;   //todo обязательно привязать к переменным из нижнего блока!
+    height: 17px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.mm__mainpage__waves_after_mainbanner--parent-div {
+    .clearfix;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    position: relative;
+}
+
+.mm__mainpage__waves_after_mainbanner--centerdiv {
+    background: url(../img/mm__mainpage_waves_after_mainbanner/mm__mainpage_waves_after_mainbanner--center.png); //todo прописаить путь внутри проекта frontend по правильному пути
+    width: 102px;
+    height: 17px;
+    float: left;
+    position: absolute;
+    top: 0;
+    z-index: 200 !important;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+}
+
+.mm__mainpage__waves_after_mainbanner--leftdiv {
+    background: url(../img/mm__mainpage_waves_after_mainbanner/mm__mainpage_waves_after_mainbanner.png) repeat-x; //todo прописаить путь внутри проекта frontend по правильному пути
+    width: 100%;
+    height: 17px;
+    float: left;
+    z-index: 100 !important;
+}
+
+//styles
+
+
+
+// styles for mm__mainpage__waves_beetween_mainbanner_important =======

@@ -1,0 +1,52 @@
+.mm__information-and-actions__comment_header--paddings {
+  padding-top: 12px;
+  padding-right: 0;
+  padding-left: 0;
+}
+.mm__information-and-actions__column--nonpadding {
+  padding: 0;
+}
+.mm__information-and-actions_action_link {
+  text-decoration: none;
+}
+.mm__information-and-actions_action_link:hover {
+  text-decoration: none;
+  text-underline: none;
+}
+.mm__information-and-actions_vote_link {
+  text-decoration: none;
+}
+.mm__information-and-actions_vote_link:hover {
+  text-decoration: none;
+  text-underline: none;
+}
+.mm__information-and-actions_action_link_important--color {
+  color: #5cb85c;
+}
+.mm__information-and-actions_action_link_important--color:hover {
+  color: #449d44;
+}
+.mm__information-and-actions_action_link_delete--color {
+  color: #d9534f;
+}
+.mm__information-and-actions_action_link_delete--color:hover {
+  color: #c9302c;
+}
+.mm__information-and-actions_action_link_complaint--color {
+  color: #f0ad4e;
+}
+.mm__information-and-actions_action_link_complaint--color:hover {
+  color: #ec971f;
+}
+.mm__information-and-actions_action_link_url--color {
+  color: #40adf0;
+}
+.mm__information-and-actions_action_link_url--color:hover {
+  color: #1298eb;
+}
+.mm__information-and-actions_action_link_important_selected--color {
+  color: #2098d1 !important;
+}
+.mm__information-and-actions_action_link_important_selected--color:hover {
+  color: #1978a5 !important;
+}

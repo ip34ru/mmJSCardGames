@@ -1,0 +1,9 @@
+.mm__signup_page_links {
+  text-transform: none;
+  color: #61b4ff !important;
+  text-decoration: underline;
+}
+.mm__signup_page_links:hover {
+  text-decoration: underline;
+  color: #6e85d7 !important;
+}

@@ -1,0 +1,30 @@
+.mm__mainpage__common_badge--competition {
+  border: 1px solid #ffcc00 !important;
+  background-color: #ffcc00 !important;
+  color: #ffffff !important;
+}
+.mm__mainpage__common_badge--forum {
+  border: 1px solid #3399cc !important;
+  background-color: #3399cc !important;
+  color: #ffffff !important;
+}
+.mm__mainpage__common_badge--article {
+  border: 1px solid #00cc66 !important;
+  background-color: #00cc66 !important;
+  color: #ffffff !important;
+}
+.mm__mainpage__common_badge--blog {
+  border: 1px solid #00ccff !important;
+  background-color: #00ccff !important;
+  color: #ffffff !important;
+}
+.mm__mainpage__common_badge--consultation {
+  border: 1px solid #cc33cc !important;
+  background-color: #cc33cc !important;
+  color: #ffffff !important;
+}
+.mm__mainpage__common_badge--advertising {
+  border: 1px solid #cc6600 !important;
+  background-color: #cc6600 !important;
+  color: #ffffff !important;
+}

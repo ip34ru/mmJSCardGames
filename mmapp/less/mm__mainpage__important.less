@@ -1,0 +1,226 @@
+// mm__mainpage section with important things
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background: #ffffff; //todo загнать цвета в переменные
+}
+
+.owl-theme .owl-dots .owl-dot span {
+    width: 10px;
+    height: 10px;
+    margin: 5px 7px;
+    background: rgba(255, 255, 255, 0.50); //todo загнать цвета в переменные
+    display: block;
+    -webkit-backface-visibility: visible;
+    -webkit-transition: opacity 200ms ease;
+    -moz-transition: opacity 200ms ease;
+    -ms-transition: opacity 200ms ease;
+    -o-transition: opacity 200ms ease;
+    transition: opacity 200ms ease;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+}
+
+.owl-theme .owl-dots .owl-dot {
+    display: inline-block;
+    zoom: 1;
+}
+
+.owl-carousel .owl-controls .owl-dot,
+.owl-carousel .owl-controls .owl-nav .owl-next,
+.owl-carousel .owl-controls .owl-nav .owl-prev {
+    cursor: pointer;
+    cursor: hand;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.owl-next,
+.owl-prev {
+    color: transparent;
+}
+
+// nav chevrons
+.owl-prev {
+    background: url(../img/mm__mainpage__important/mm__mainpage__important_chevron--nav-sprites.png); //todo прописаить путь внутри проекта frontend по правильному пути
+    background-position: -1px -61px;
+    width: 29px;
+    height: 54px;
+
+    &:hover {
+        background: url(../img/mm__mainpage__important/mm__mainpage__important_chevron--nav-sprites.png); //todo прописаить путь внутри проекта frontend по правильному пути
+        background-position: 0 -1px;
+        width: 29px;
+        height: 54px;
+    }
+}
+
+.owl-next {
+    background: url(../img/mm__mainpage__important/mm__mainpage__important_chevron--nav-sprites.png); //todo прописаить путь внутри проекта frontend по правильному пути
+    background-position: -54px -57px;
+    width: 29px;
+    height: 54px;
+
+    &:hover {
+        background: url(../img/mm__mainpage__important/mm__mainpage__important_chevron--nav-sprites.png); //todo прописаить путь внутри проекта frontend по правильному пути
+        background-position: -50px -2px;
+        width: 29px;
+        height: 54px;
+    }
+}
+// nav chevrons ---
+
+// media queries for nav chevrones
+@media screen and (min-width: 1215px) {
+    .owl-prev {
+        position: absolute;
+        top: 200px;
+        left: -30px;
+    }
+
+    .owl-next {
+        position: absolute;
+        top: 200px;
+        right: -30px;
+    }
+}
+
+@media screen and (min-width: 993px) and (max-width: 1214px) {
+    .owl-prev {
+        display: none !important;
+    }
+
+    .owl-next {
+        display: none !important;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 993px) {
+    .owl-prev {
+        display: none !important;
+    }
+
+    .owl-next {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .owl-prev {
+        display: none !important;
+    }
+
+    .owl-next {
+        display: none !important;
+    }
+}
+// media queries for nav chevrones ---
+
+.owl-theme .owl-controls {
+    margin-top: 10px;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.owl-theme .owl-controls .owl-nav [class*=owl-] {
+    color: transparent;
+    font-size: 14px;
+    margin: 5px;
+    padding: 4px 7px;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.owl-carousel .owl-controls .owl-dot, .owl-carousel .owl-controls .owl-nav .owl-next, .owl-carousel .owl-controls .owl-nav .owl-prev {
+    cursor: pointer;
+    cursor: hand;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.owl-theme .owl-controls {
+    margin-top: 10px;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mm__mainpage_important--background {
+    background: #00c0cb; //todo закинуть в переменные
+}
+
+.mm__mainpage_important_textseparator {
+    width: 100%;
+    background: url(../img/mm__mainpage__important/mm__mainpage__important_text-divider.png) no-repeat;
+    background-position: center;
+    //todo прописаить путь внутри проекта frontend по правильному пути
+    height: 9px;
+    margin-bottom: 10px;
+}
+
+.mm__mainpage_important_text--color {
+    color: #ffffff;
+}
+
+.mm__mainpage_important_imgsection-separator {
+    width: 100%;
+    background: url(../img/mm__mainpage__important/mm__mainpage__important_imgsection-divider.png) repeat no-repeat;
+    //todo прописаить путь внутри проекта frontend по правильному пути
+    height: 5px;
+    margin-bottom: 10px;
+}
+
+.mm__mainpage_important_overlay-top {
+    position: absolute;
+    top: 10px;
+    padding: 4px;
+    bottom: auto;
+    left: 58%; //todo исправить на сотиках, сделать по всей  ширине
+    right: 0;
+    overflow: hidden;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -webkit-transition: all ease-in-out 0.25s;
+    -o-transition: all ease-in-out 0.25s;
+    transition: all ease-in-out 0.25s;
+    height: 15px;
+    color: #ffffff;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    border-radius: 3px 0 0 3px;
+}
+
+.overlay-visible.overlay-container:hover .mm__mainpage_important_overlay-top {
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.overlay-container:hover .mm__mainpage_important_overlay-top {
+    height: 50%;
+    opacity: 1;
+    filter: alpha(opacity=100);
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0) scale(1, 1);
+}
+
+.overlay-visible .mm__mainpage_important_overlay-top {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    height: auto!important;
+    padding-bottom: 4px;
+}
+
+.mm__mainpage_important_overlay-bottom--border-radius {
+    border-radius: 0 0 6px 6px;
+}
+
+// mm__mainpage section with important things
+
+
