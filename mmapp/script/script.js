@@ -7,7 +7,34 @@
 // 3) http://localhost:7777/
 // =============================================================================
 
-//TODO сделать объект в ктором сделать соответсвие для бейджа и класса цвета бейджа и иконки
+let content_type = {
+                        article: {
+                            class: 'mm__mainpage__common_badge--article',
+                            icon: 'fa-file-text-o'
+                        },
+                        blog: {
+                            class: 'mm__mainpage__common_badge--blog',
+                            icon: 'fa-pencil-square-o'
+                        },
+                        competition: {
+                            class: 'mm__mainpage__common_badge--competition',
+                            icon: 'fa-trophy'
+                        },
+                        consultation: {
+                            class: 'mm__mainpage__common_badge--consultation',
+                            icon: 'fa-university'
+                        },
+                        advertising: {
+                            class: 'mm__mainpage__common_badge--advertising',
+                            icon: 'fa-file-text-o'
+                        },
+                        forum: {
+                            class: 'mm__mainpage__common_badge--forum',
+                            icon: 'fa-comments-o'
+                        }
+                    };
+
+// console.log( 'content_type', content_type['consultation'].class )
 
 let sourceCardsData = [
     {
@@ -538,9 +565,12 @@ let cardsRoundResult = document.getElementById('cardsRoundResult');
 let addThreeCards_1 = document.getElementById('addThreeCards_1');
 let addThreeCards_2 = document.getElementById('addThreeCards_2');
 let threeCardsTemplate = document.getElementById('threeCardsTemplate');         // handlebars шаблон
+let sortingCardsData = [];
+let rightLeftSwitcher = false;                                                  // когда false то влево смещать карточку из 2 клеток, когда true то сместить вправо
 // переменные===================================================================
 
 // функции======================================================================
+
 /**
  * generateCardsToDom генерация карточек из массива в DOM
  * @param  {DOM element} sourceDOMElement - родительский DOM элемиент в который будет вставляться сгенеренный Handlebars темплейт
@@ -573,3 +603,15 @@ function handleInsertToDOM(e) {
 addThreeCards_1.addEventListener('click', (e) => {handleInsertToDOM(e);});
 addThreeCards_2.addEventListener('click', (e) => {handleInsertToDOM(e);});
 // обработчики==================================================================
+
+// предобработка входного массива с карточками==================================
+function compareCardsWeigth(a, b) {
+  return b.weight - a.weight;
+}; //compareCardsWeigth
+
+sortingCardsData = sourceCardsData.sort( compareCardsWeigth );
+
+for(let i in sortingCardsData){
+    console.log(sortingCardsData[i].weight);
+}
+// предобработка входного массива с карточками==================================
