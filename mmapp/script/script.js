@@ -34,8 +34,6 @@ let content_type = {
                         }
                     };
 
-// console.log( 'content_type', content_type['consultation'].class )
-
 let sourceCardsData = [
     {
         "content_id": "1",
