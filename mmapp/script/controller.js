@@ -1,17 +1,17 @@
 var Controller = {
     musicRoute: function() {
         return Model.getMusic().then(function(music) {
-            results.innerHTML = View.render('music', {list: music});
+            cardsRoundResult.innerHTML = View.render('music', {list: music});
         });
     },
     friendsRoute: function() {
         return Model.getFriends().then(function(friends) {
-            results.innerHTML = View.render('friends', {list: friends});
+            cardsRoundResult.innerHTML = View.render('friends', {list: friends});
         });
     },
     groupsRoute: function() {
         return Model.getGroups().then(function(groups) {
-            results.innerHTML = View.render('groups', {list: groups.items});
+            cardsRoundResult.innerHTML = View.render('groups', {list: groups.items});
         });
     },
     photosRoute: function() {
@@ -41,8 +41,8 @@ var Controller = {
                         }
                     );
 
-                    //HACK каждый раз перстраиваем dom дерево? 
-                    results.innerHTML = View.render('photos', {list: photos.items});
+                    //HACK каждый раз перстраиваем dom дерево?
+                    cardsRoundResult.innerHTML = View.render('photos', {list: photos.items});
 
                 };
                 // queueRequests
@@ -54,7 +54,7 @@ var Controller = {
     },
     newsRoute: function() {
         return Model.getNews().then(function(news) {
-            results.innerHTML = View.render('news', {list: news.items});
+            cardsRoundResult.innerHTML = View.render('news', {list: news.items});
         });
     }
 };

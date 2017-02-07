@@ -1,128 +1,575 @@
-// ДЗ 2: Создать приложение для ВКонтакте, которое загружает список ваших
-// друзей и выводит их на страницу в следующем формате:
-// Фото, ФИО, Возраст, Дата рождения.
-// Друзья должны быть отсортированы по дате рождения в порядке убывания.
-// То есть на самом верху списка расположен друг с ближайший датой рождения.
-// Использование шаблонизатора приветствуется.
-// =============================================================================
-
-// =============================================================================
-// VK AppID = 5757533
-// =============================================================================
-
+;'use strict';
 // =============================================================================
 // Установка HTTP-сервера:
 // 1) npm install http-server -g
 // Запуск HTTP-сервера:
-// 2) http-server hm2 -p 7777 -a 127.0.0.1
+// 2) http-server mmapp -p 7777 -a 127.0.0.1
 // 3) http://localhost:7777/
 // =============================================================================
 
-let vkAppId = 5757533;
-let headerUserFriendsVK = document.getElementById('headerUserFriendsVK');
-let listOfDownloadedFriends = document.getElementById('listOfDownloadedFriends');
-let allRenderedFriends = document.getElementById('allRenderedFriends');
-let VK_ACCESS_FRIENDS = 2;
+//TODO сделать объект в ктором сделать соответсвие для бейджа и класса цвета бейджа и иконки
 
-// вспомогательные функции======================================================
-// функция сравнения возраста
-function compareAge(personA, personB) {
-    let friendA = new Date(personA.bdate.replace(/(\d+)\.(\d+)\.(\d+)/, '$2/$1/$3'));
-    let friendB = new Date(personB.bdate.replace(/(\d+)\.(\d+)\.(\d+)/, '$2/$1/$3'));
-    friendA = Date.parse(friendA);
-    friendB = Date.parse(friendB);
-    return friendB - friendA;       // здесь можно поменять порядок сортировки, поменяв слагаемые
-} // compareAge
-// вспомогательные функции======================================================
-
-
-new Promise(function(resolve) {
-        if (document.readyState === 'complete') {
-            resolve();
-        } else {
-            window.onload = resolve;
+let sourceCardsData = [
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":365,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":3,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
         }
-    })
-    // запрос авторизации в ВК
-    .then(function() {
-        return new Promise(function(resolve, reject) {
-            VK.init({
-                apiId: vkAppId
-            });
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":45,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":65,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":35,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":11,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":200,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":2,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":276,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":36,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":11,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":34,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":3,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":98,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":43,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":2,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":72,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    }
+];
 
-            VK.Auth.login(function(response) {
-                if (response.session) {
-                    resolve(response);
-                } else {
-                    reject(new Error('Не удалось авторизоваться'));
-                }
-            }, VK_ACCESS_FRIENDS);
-        });
-    })
-    // получение полного имени пользователя
-    .then(function() {
-        return new Promise(function(resolve, reject) {
-            VK.api('users.get', {'name_case': 'gen'}, function(response) {
-                if (response.error) {
-                    reject(new Error(response.error.error_msg));
-                } else {
-                    headerUserFriendsVK.textContent = `Друзья ${response.response[0].first_name} ${response.response[0].last_name}`;
-                    resolve();
-                }
-            });
-        })
-    })
-    // получение id всех друзей пользователя
-    .then(function() {
-        return new Promise(function(resolve, reject) {
-            VK.api('friends.get', {v: '5.8'}, function(serverAnswer) {
-                if (serverAnswer.error) {
-                    reject(new Error(serverAnswer.error.error_msg));
-                } else {
-                    resolve(serverAnswer);
-                }
-            });
-        });
-    })
-    // получение данных всех ранее полученных друзей, обработка дат рождения, вывод в DOM
-    .then( function(serverAnswer) {
-        return new Promise(
-            function(resolve, reject) {
-                VK.api(
-                    'users.get',
-                    {
-                        v: '5.8',
-                        user_ids: serverAnswer.response.items,
-                        fields: 'bdate,photo_50,friend_status'
-                    },
-                    function(serverAnswer) {
-                        if (serverAnswer.error) {
-                            reject(new Error(serverAnswer.error.error_msg));
-                        } else {
-                            console.log('serverAnswer.response = ', serverAnswer.response);
-                            // в промежуточный массив брать только тех кто указал дату рождения полностью
-                            let tempArrOfFriendsObj = [];
-                            for (let i = 0; i < serverAnswer.response.length; i++) {
-                                if ( serverAnswer.response[i].bdate && typeof serverAnswer.response[i].bdate !== 'undefined' ) {
-                                    if (serverAnswer.response[i].bdate.match(/\.\d{4}/i)) {
-                                        let tempLength = tempArrOfFriendsObj.length;
-                                        tempArrOfFriendsObj[tempLength] = serverAnswer.response[i];
-                                    }
-                                }
-                            }
-                            // вызов функции сортировки по возрасту
-                            tempArrOfFriendsObj.sort(compareAge);
-                            // вывод данных о друзьях в DOM
-                            let source = allRenderedFriends.innerHTML;
-                            let templateFn = Handlebars.compile(source);
-                            let template = templateFn({ friendslist: tempArrOfFriendsObj });
-                            listOfDownloadedFriends.innerHTML = template;
-                            resolve();
-                        }
-                });
-            }
-        );
-    })
-    .catch(function(e) {
-        alert(`Ошибка: ${e.message}`);
-    });
+
+// переменные===================================================================
+let cardsRoundResult = document.getElementById('cardsRoundResult');
+let addThreeCards_1 = document.getElementById('addThreeCards_1');
+let addThreeCards_2 = document.getElementById('addThreeCards_2');
+let threeCardsTemplate = document.getElementById('threeCardsTemplate');         // handlebars шаблон
+// переменные===================================================================
+
+// функции======================================================================
+/**
+ * generateCardsToDom генерация карточек из массива в DOM
+ * @param  {DOM element} sourceDOMElement - родительский DOM элемиент в который будет вставляться сгенеренный Handlebars темплейт
+ * @param  {DOM element} handlebarsDOMTemplate - Handlebars темплейт который будет вставляться в DOM на странице
+ * @param  {array} dataArray - массив с объектами (вставляются друзья из VK, поля связаны с Handlebars темплейтом)
+ * @return {boolean} or {Throw New Error} выбрасываем ошибку, если входные параметры пустые, если все ок то возвращаем true
+ */
+function generateCardsToDom( sourceDOMElement, handlebarsDOMTemplate, dataArray ) {
+    if ( arguments.length === 0 || !dataArray ) {
+        throw new Error('DATA_EMPTY');
+    }
+    let tempDOM = document.createElement('div');
+    let source = handlebarsDOMTemplate.innerHTML;
+    let templateFn = Handlebars.compile(source);
+    let template = templateFn({ list: dataArray });
+    tempDOM.innerHTML = template;
+    tempDOM = tempDOM.firstElementChild;
+    sourceDOMElement.appendChild(tempDOM);
+    return true;
+} //generateCardsToDom
+
+
+function handleInsertToDOM(e) {
+    generateCardsToDom( cardsRoundResult, threeCardsTemplate, sourceCardsData )
+}; // handleInsertToDOM
+// функции======================================================================
+
+
+// обработчики==================================================================
+addThreeCards_1.addEventListener('click', (e) => {handleInsertToDOM(e);});
+addThreeCards_2.addEventListener('click', (e) => {handleInsertToDOM(e);});
+// обработчики==================================================================

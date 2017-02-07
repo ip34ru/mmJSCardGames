@@ -1,0 +1,122 @@
+[
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор коляски для малыша",
+        "teaser": "Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":365,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Учим малыша слушать батл-рэп",
+        "teaser": "Кто победит нап батле: гнойный или оксимирон. Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":365,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+    {
+        "content_id": "1",
+        "content_type": "article",
+        "title": "Выбор наручников и плетки",
+        "teaser": "Как выбрать антураж для ролеевых игр? Ответ прост – учитывайте предпочтения мамы...",
+        "master_image": "/media/original_image.jpg",
+        "url":"/articles/4235-vibor-kolyaski-dlya-malisha/",
+        "author": {
+            "name": "Ализаровна",
+            "avatar": "/media/avatars/alizar_face.jpg",
+            "url": "/users/alizar_woman",
+            "rating": 150,
+            "karma": 10
+        },
+        "created": 1486647934,
+        "updated": 1486648934,
+        "vote_count": 32,
+        "view_count": 89,
+        "allow_comments":true,
+        "comments_count": 20,
+        "weight":365,
+        "tags":[{"name":"Коляска", "url":"/articles/tags/kolyaska"}],
+        "seo": {
+            "keywords": "Выбор коляски, Ализаровна советует, Коляска"
+        },
+        "badge":{"title":"Статья"},
+        "card":{
+            "size":1,
+            "images":[
+                {
+                    "size":1,
+                    "url":"/media/articles/cards/card_1_size.jpg"
+                },
+                {
+                    "size":3,
+                    "url":"/media/articles/cards/card_3_size.jpg"
+                }
+            ]
+        }
+    },
+]
