@@ -1,40 +1,205 @@
-;'use strict';
-// =============================================================================
-// Установка HTTP-сервера:
-// 1) npm install http-server -g
-// Запуск HTTP-сервера:
-// 2) http-server mmapp -p 7777 -a 127.0.0.1
-// 3) http://localhost:7777/
-// =============================================================================
+/*
+ * Базовый класс для элементов
+ */
+class BaseElement {
+    /**
+     * Конструктор
+     * @param templateId Идентификатор шаблона
+     * @param element элемент, в который все оборачивается
+     */
+    constructor(templateId, element = 'div') {
+        /**
+         * Элемент, в который оборачивается виджет
+         * @type {Element}
+         */
+        this.el = document.createElement(element);
+        //небольшой хелпер
+        this.$el = $(this.el);
+        let templateSource = $(`#${templateId}`).html();
+        /**
+         * Шаблон элемента
+         */
+        this.template = Handlebars.compile(templateSource, {noEscape: true});
+    }
 
-let content_type = {
-                        article: {
-                            class: 'mm__mainpage__common_badge--article',
-                            icon: 'fa-file-text-o'
-                        },
-                        blog: {
-                            class: 'mm__mainpage__common_badge--blog',
-                            icon: 'fa-pencil-square-o'
-                        },
-                        competition: {
-                            class: 'mm__mainpage__common_badge--competition',
-                            icon: 'fa-trophy'
-                        },
-                        consultation: {
-                            class: 'mm__mainpage__common_badge--consultation',
-                            icon: 'fa-university'
-                        },
-                        advertising: {
-                            class: 'mm__mainpage__common_badge--advertising',
-                            icon: 'fa-file-text-o'
-                        },
-                        forum: {
-                            class: 'mm__mainpage__common_badge--forum',
-                            icon: 'fa-comments-o'
-                        }
-                    };
+    /**
+     * Локальный скоуп
+     * @param selector
+     * @returns {*}
+     */
+    $(selector) {
+        return this.$el.find(selector);
+    }
 
-let sourceCardsData = [
+
+    setupListeners() {
+
+    }
+
+    get contextData() {
+        return {}
+    }
+
+    render() {
+        this.$el.html(this.template(this.contextData));
+        this.setupListeners();
+    }
+}
+
+class Card extends BaseElement {
+    constructor(data, templateId = 'cardTemplate') {
+        super(templateId);
+        this.data = data;
+        this.render();
+    }
+
+    get contextData() {
+        return this.data;
+    }
+
+    setupListeners() {
+        this.$('.add-to-favorite').on('click', ()=> {
+            this.setFavorite();
+        });
+    }
+
+    setFavorite() {
+        // this.$('.card').addClass('card-inverse card-info');
+        console.log('Карточка добавлена в избранное');
+    }
+}
+
+class Row extends BaseElement {
+    constructor(cardsDataList, mode, templateId = 'rowTemplate') {
+        super(templateId);
+        this._cardsDataList = cardsDataList;
+        this._mode = mode;
+        this._cards = [];
+        this.loadCards(cardsDataList);
+        this.render();
+    }
+
+    get contextData() {
+        let mode = {};
+        mode[this._mode] = true;
+        let result = {
+            cards: this._cards,
+            mode: mode
+        };
+        return result;
+    }
+
+    loadCards(cards) {
+        switch (this._mode) {
+            case 'one':
+                if (cards.length < 0) {
+                    throw 'Insufficient cards';
+                }
+                this._cards.push(
+                    new Card(cards.shift())
+                );
+                break;
+            case 'three':
+                if (cards.length < 3) {
+                    throw 'Insufficient cards';
+                }
+                this._cards.push(new Card(cards.shift()));
+                this._cards.push(new Card(cards.shift()));
+                this._cards.push(new Card(cards.shift()));
+                break;
+            default:
+                if (cards.length < 2) {
+                    throw 'Insufficient cards';
+                }
+                this._cards.push(new Card(cards.shift()));
+                this._cards.push(new Card(cards.shift()));
+                break;
+        }
+    }
+
+    render() {
+        super.render();
+        for (let cardIndex in this._cards) {
+            this.$(`.container_card_${cardIndex}`).html(this._cards[cardIndex].el.firstElementChild);
+        }
+    }
+}
+
+class CardDashBoard extends BaseElement {
+    constructor(dataList, templateId = 'dashboardTemplate') {
+        super(templateId);
+        this.dataList = dataList;
+        this.patterns = ['', 'three', '', 'three', '', 'three'];
+        this.purePatterns = ['one', 'twoLeft', 'twoRight' ];
+        this.rows = [];
+        this.loadRows(dataList);
+    }
+
+
+
+    get randomizeCardsPattern() {
+        let tempPureArray = [];
+        let tempArray = [];
+        tempPureArray = tempPureArray.splice().concat(this.purePatterns);
+        tempArray = tempArray.splice().concat(this.patterns);
+
+        for (let i = tempPureArray.length; i; i--) {
+            let j = Math.floor(Math.random() * i);
+            [tempPureArray[i - 1], tempPureArray[j]] = [tempPureArray[j], tempPureArray[i - 1]];
+        }
+
+        tempArray[0] = tempPureArray[0];
+        tempArray[2] = tempPureArray[1];
+        tempArray[4] = tempPureArray[2];
+        return tempArray;
+    }
+
+    loadRows(items) {
+
+        let patternId = 0;
+        let randomPatterns = this.randomizeCardsPattern;
+        let cardsRollup;
+
+        this.$el.html(this.template({}));
+        cardsRollup = this.$('#cardsRollup');
+
+
+        console.log('randomPatterns =', randomPatterns);
+        while (items.length > 0) {
+            try {
+                let row = new Row(items, randomPatterns[patternId]);
+                // this.$el.append(row.el.firstElementChild);
+                this.rows.push(row);
+                cardsRollup.append(row.el.firstElementChild);
+            }
+            catch (e) {
+                break;
+            }
+            ++patternId;
+            if (patternId >= randomPatterns.length) {
+                patternId = 0;
+            }
+        }
+        //Принтим оставшиеся элементы
+        this.setupListeners();
+        console.log(items);
+    }
+
+    setupListeners() {
+        this.$('#btnMoreCards').on('click', ()=> {
+            this.getMoreCards();
+        });
+    }
+
+    getMoreCards() {
+      console.log('Сейчас загружу еще карточки');
+    }
+
+
+}
+
+
+let cardList = [
     {
         "content_id": "1",
         "content_type": "article",
@@ -555,127 +720,18 @@ let sourceCardsData = [
             ]
         }
     }
+
 ];
 
 
-// переменные===================================================================
-let cardsRoundResult = document.getElementById('cardsRoundResult');
-let addThreeCards_1 = document.getElementById('addThreeCards_1');
-let addThreeCards_2 = document.getElementById('addThreeCards_2');
-let threeCardsTemplate = document.getElementById('threeCardsTemplate');         // handlebars шаблон
-let workingCardsData = [];
-let workingCardsDataTWIN = [];
-let uniqCardsIDs = [];
-let tempThreeCardsToDOM = [];                                                   // временные массивы в них собирать карточки и генерить эти данные в DOM
-let tempTwoCardsToDOM = [];                                                     // временные массивы в них собирать карточки и генерить эти данные в DOM
-let tempOneCardsToDOM = [];                                                     // временные массивы в них собирать карточки и генерить эти данные в DOM
-let rightLeftSwitcher = false;                                                  // когда false то влево смещать карточку из 2 клеток, когда true то сместить вправо
-// переменные===================================================================
-
-// функции======================================================================
-
-/**
- * generateCardsToDom генерация карточек из массива в DOM
- * @param  {DOM element} sourceDOMElement - родительский DOM элемиент в который будет вставляться сгенеренный Handlebars темплейт
- * @param  {DOM element} handlebarsDOMTemplate - Handlebars темплейт который будет вставляться в DOM на странице
- * @param  {array} dataArray - массив с объектами (поля связаны с Handlebars темплейтом)
- * @return {boolean} or {Throw New Error} выбрасываем ошибку, если входные параметры пустые, если все ок то возвращаем true
- */
-function generateCardsToDom( sourceDOMElement, handlebarsDOMTemplate, dataArray ) {
-    if ( arguments.length === 0 || !dataArray ) {
-        throw new Error('DATA_EMPTY');
-    }
-    let tempDOM = document.createElement('div');
-    let source = handlebarsDOMTemplate.innerHTML;
-    let templateFn = Handlebars.compile(source);
-    let template = templateFn({ list: dataArray });
-    tempDOM.innerHTML = template;
-    tempDOM = tempDOM.firstElementChild;
-    sourceDOMElement.appendChild(tempDOM);
-    window.tempDOM = tempDOM;
-    return true;
-} //generateCardsToDom
-
-// Проверка на уникальность строки (ключ карточки) в массиве
-function findUniqCardsIDs(value, array) {
-    for(let i = 0; i < array.length; i++) {
-        if(array[i] === value) {
-            return true
-        }
-    }
-    return false;
-} //findUniqCardsIDs
-
-function handleInsertToDOM(e) {
-    generateCardsToDom( cardsRoundResult, threeCardsTemplate, sourceCardsData )
-}; // handleInsertToDOM
-// функции======================================================================
 
 
-// обработчики==================================================================
-addThreeCards_1.addEventListener('click', (e) => {handleInsertToDOM(e);});
-addThreeCards_2.addEventListener('click', (e) => {handleInsertToDOM(e);});
-// обработчики==================================================================
-
-// предобработка входного массива с карточками==================================
+let dashBoard = new CardDashBoard(cardList);
+$('#cardContainer').html(dashBoard.el);
 
 
-
-workingCardsData = sourceCardsData;
-
-// наполнить массив уникальными ключами
-for(let i in workingCardsData){
-    // проверка на то, рендерилались ли карточка ранее в DOM, если нет, добавить в массив уникальных ключей
-    if ( findUniqCardsIDs( workingCardsData[i].content_id + workingCardsData[i].content_type, uniqCardsIDs ) ) {
-        continue;
-    } else {
-        uniqCardsIDs.push( workingCardsData[i].content_id + workingCardsData[i].content_type );
-    }
-}
-
-// раскидать карточки налево и направо
-for(let i in workingCardsData){
-    // проверка на то, рендерилались ли карточка ранее в DOM
-    if ( findUniqCardsIDs( workingCardsData[i].content_id + workingCardsData[i].content_type, uniqCardsIDs ) ) {
-        continue;
-    }
-
-    // установка свойства (слева или справа) для карточки размером 2
-    if ( workingCardsData[i].card.size === 2 ) {
-        rightLeftSwitcher = !rightLeftSwitcher;
-        if ( !rightLeftSwitcher ) {
-            workingCardsData[i].card.leftSide = true;
-            workingCardsData[i].card.rightSide = false;
-        } else {
-            workingCardsData[i].card.leftSide = false;
-            workingCardsData[i].card.rightSide = true;
-        }
-    }
-}
-
-// TODO обходить массив рекурсивно, искать то что нужно, результаты между собой перемежать.
-// TODO провести частотный анализ и на основе данных собирать масивы для рендеринга
-// собирать карточки по временным массивам и сразу рендерить в DOM
-// сделать близнеца для массива
-workingCardsDataTWIN = workingCardsDataTWIN.concat(workingCardsData);
-for(let i in workingCardsDataTWIN){
-    // проверка на то, рендерилались ли карточка ранее в DOM
-    if ( findUniqCardsIDs( workingCardsDataTWIN[i].content_id + workingCardsDataTWIN[i].content_type, uniqCardsIDs ) ) {
-        continue;
-    }
-
-    // сгенерить временный массив и отрендерить
-    if ( workingCardsDataTWIN[i].card.size === 1 ) {
-
-    }
-
-
-}
-
-
-console.log('========== uniqCardsIDs ===========');
-for (let i in uniqCardsIDs) {
-    console.log( uniqCardsIDs[i] );
-}
-
-// предобработка входного массива с карточками==================================
+//TODO переписать функционал получения с бекэнда
+//TODO обновления карточек (если таймаут большой, то обновляетсмя информация в существующих, т.е. загрузка с бекэндап начинается сначала)
+//TODO
+//TODO функционал учета таймаутов
+//TODO переделать шаблоны хендлбарса

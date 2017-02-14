@@ -102,38 +102,11 @@
             <!-- section main-ribbon header end ======= -->
 
             <!-- mainribbon_cards start ======= -->
-            <div id="cardsRoundResult">
+            <div id="cardContainer">
             </div>
             <!-- mainribbon_cards end ======= -->
 
-            <!-- section main-ribbon more button start ======= -->
-            <div class="mm__mainpage_mainribbon_background
-                        mm__mainpage_mainribbon_more-button--hovered
-                        footer-top animated-text">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="call-to-action text-center">
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                        <h2 class="mm__headers--non-text-transform mm__mainpage_mainribbon_color">Получите больше информации</h2>
-                                        <h2 class="mm__headers--non-text-transform mm__mainpage_mainribbon_color">Узнайте новое</h2>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <p class="mt-10"><a href="#"
-                                                            class="btn btn-animated btn-lg
-                                                                   mm__mainpage_mainribbon_more-button-transparent ">
-                                                Еще<i class="fa fa-refresh pl-20"></i>
-                                            </a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- section main-ribbon more button end ========= -->
+
 
             <!-- waves after important things start -->
             <section class="mm__mainpage__waves_after_mainribbon">
@@ -639,13 +612,289 @@
     </script>
     <!-- oneCardTemplate -->
 
+    <!-- ======================================================================================================================= -->
+    <!-- ======================================================================================================================= -->
+    <!-- ======================================================================================================================= -->
+    <!-- ======================================================================================================================= -->
+
+
+
+    <script type="text/x-handlebars-template" id="rowTemplate">
+
+        <!-- Template for Three Carsd -->
+        {{#if mode.three}}
+            <section class="section
+                mm__mainpage_mainribbon_section--padding-t0-b5
+                mm__mainpage_mainribbon_background
+                clearfix
+                mm__mainpage_mainribbon_card--3item">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Tab panes -->
+                            <div class="tab-content clear-style">
+                                <div class="tab-pane active">
+                                    <div class="row masonry-grid-fitrows grid-space-10">
+
+                                        {{#each cards}}
+                                            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4
+                                                masonry-grid-item
+                                                mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
+                                                <!-- Card Content Rendered Here -->
+                                            </div>
+                                        {{/each}}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- pills end -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {{/if}}
+        <!-- Template for Three Carsd -->
+
+        <!-- Template for Two Cards Big Card on left -->
+        {{#if mode.twoLeft}}
+            <section class="section
+                mm__mainpage_mainribbon_section--padding-t0-b5
+                mm__mainpage_mainribbon_background
+                clearfix
+                mm__mainpage_mainribbon_card--2item-left">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Tab panes -->
+                            <div class="tab-content clear-style">
+                                <div class="tab-pane active">
+                                    <div class="row masonry-grid-fitrows grid-space-10">
+
+                                        {{#each cards}}
+
+                                            {{#if @index}}
+                                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4
+                                                    masonry-grid-item
+                                                    mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
+                                                    <!-- Card Content Rendered Here -->
+                                                </div>
+                                            {{else}}
+                                                <!-- MIDDLE LARGE SCREENS -->
+                                                <div class="col-md-8 col-lg-8 hidden-xs hidden-sm
+                                                    masonry-grid-item
+                                                    mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
+                                                    <!-- Card Content Rendered Here -->
+                                                </div>
+                                                <!-- MIDDLE LARGE SCREENS -->
+
+                                                <!-- XTRASMALL SMALL SCREENS -->
+                                                <div class="col-xs-12 col-sm-6 hidden-md hidden-lg
+                                                    masonry-grid-item
+                                                    mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
+                                                    <!-- Card Content Rendered Here -->
+                                                </div>
+                                                <!-- XTRASMALL SMALL SCREENS -->
+
+                                            {{/if}}
+
+                                        {{/each}}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- pills end -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {{/if}}
+        <!-- Template for Two Cards Big Card on left -->
+
+        <!-- Template for Two Cards Big Card on Right -->
+        {{#if mode.twoRight}}
+            <section class="section
+                mm__mainpage_mainribbon_section--padding-t0-b5
+                mm__mainpage_mainribbon_background
+                clearfix
+                mm__mainpage_mainribbon_card--2item-right">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Tab panes -->
+                            <div class="tab-content clear-style">
+                                <div class="tab-pane active">
+                                    <div class="row masonry-grid-fitrows grid-space-10">
+
+                                        {{#each cards}}
+
+                                            {{#if @index}}
+
+                                                <!-- MIDDLE LARGE SCREENS -->
+                                                <div class="col-md-8 col-lg-8 hidden-xs hidden-sm
+                                                    masonry-grid-item
+                                                    mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
+                                                    <!-- Card Content Rendered Here -->
+                                                </div>
+                                                <!-- MIDDLE LARGE SCREENS -->
+
+                                                <!-- XTRASMALL SMALL SCREENS -->
+                                                <div class="col-xs-12 col-sm-6 hidden-md hidden-lg
+                                                    masonry-grid-item
+                                                    mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
+                                                    <!-- Card Content Rendered Here -->
+                                                </div>
+                                                <!-- XTRASMALL SMALL SCREENS -->
+
+                                            {{else}}
+
+                                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4
+                                                    masonry-grid-item
+                                                    mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
+                                                    <!-- Card Content Rendered Here -->
+                                                </div>
+
+                                            {{/if}}
+
+                                        {{/each}}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- pills end -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {{/if}}
+        <!-- Template for Two Cards Big Card on Right -->
+
+        <!-- Template for One Card -->
+        {{#if mode.one}}
+            <section class="section
+                mm__mainpage_mainribbon_section--padding-t0-b5
+                mm__mainpage_mainribbon_background
+                clearfix
+                mm__mainpage_mainribbon_card--1item">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <!-- Tab panes -->
+                            <div class="tab-content clear-style">
+                                <div class="tab-pane active">
+                                    <div class="row masonry-grid-fitrows grid-space-10">
+
+                                        {{#each cards}}
+                                            <!-- SMALL MIDDLE LARGE SCREENS -->
+                                            <div class="col-sm-12 col-md-12 col-lg-12 hidden-xs
+                                                masonry-grid-item
+                                                mm__mainpage_mainribbon_card--full-width container_card_{{@index}}">
+                                                <!-- Card Content Rendered Here -->
+                                            </div>
+                                            <!-- SMALL MIDDLE LARGE SCREENS -->
+
+                                            <!-- XTRASMALL SCREENS -->
+                                            <div class="col-xs-12 hidden-sm hidden-md hidden-lg
+                                                masonry-grid-item
+                                                mm__mainpage_mainribbon_card--full-width container_card_{{@index}}">
+                                                <!-- Card Content Rendered Here -->
+                                            </div>
+                                            <!-- XTRASMALL SCREENS -->
+                                        {{/each}}
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- pills end -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {{/if}}
+        <!-- Template for One Card -->
+
+    </script>
+
+    <!-- Template for Card Data -->
+    <script type="text/x-handlebars-template" id="cardTemplate">
+        <div class="listing-item white-bg bordered mb-10 ">
+            <div class="overlay-container">
+                <img src="img/temp-lorpix/lor-4-1.jpg" alt="" class="center-block">
+                <a class="overlay-link popup-img-single" href="http://lorempixel.com/370/210/food/1/"><i class="fa fa-search-plus"></i></a>
+                <span class="badge mm__mainpage__common_badge--competition">
+                    <!-- TODO учесть добаление каждому своей иконки -->
+                    <i class="fa fa-trophy"></i> {{badge.title}}
+                </span>
+                <div class="overlay-to-top links">
+                    <span class="small">
+                        <a href="javasript:void(0);" class="btn-sm-link add-to-favorite"><i class="fa fa-heart-o pr-10"></i>Add to Wishlist</a>
+                        <a href="javasript:void(0);" class="btn-sm-link"><i class="icon-link pr-5"></i>View Details</a>
+                    </span>
+                </div>
+            </div>
+            <div class="body">
+                <h3><a href="{{url}}">{{title}}</a></h3>
+                <p class="small">{{teaser}}</p>
+                <div class="elements-list clearfix">
+                    <span class="price"><del>$100.00</del> $70.00</span>
+                    <a href="#" class="pull-right margin-clear btn btn-sm btn-default-transparent btn-animated">Add To Cart<i class="fa fa-shopping-cart"></i></a>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!-- Template for Card Data -->
+
+    <!-- Template for Cards Dashboard -->
+    <script type="text/x-handlebars-template" id="dashboardTemplate">
+        <div id="cardsRollup">
+        </div>
+        <!-- section main-ribbon more button start ======= -->
+        <div class="mm__mainpage_mainribbon_background
+                    mm__mainpage_mainribbon_more-button--hovered
+                    footer-top animated-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="call-to-action text-center">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <h2 class="mm__headers--non-text-transform mm__mainpage_mainribbon_color">Получите больше информации</h2>
+                                    <h2 class="mm__headers--non-text-transform mm__mainpage_mainribbon_color">Узнайте новое</h2>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="mt-10">
+                                        <a href="#" class="btn btn-animated btn-lg mm__mainpage_mainribbon_more-button-transparent ">
+                                            Еще<i class="fa fa-refresh pl-20"></i>
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- section main-ribbon more button end ========= -->
+    </script>
+    <!-- Template for Cards Dashboard -->
+
+<!-- ======================================================================================================================= -->
+<!-- ======================================================================================================================= -->
+<!-- ======================================================================================================================= -->
+<!-- ======================================================================================================================= -->
+
+
+
+
+
     <!-- Handlebars templates -->
 
     <script type"text/javascript" src="https://vk.com/js/api/openapi.js"></script>
     <!-- HandlebarsJS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
     <!-- CustomJS -->
-    <script type="text/javascript" src="script/script.js"></script>
+    <!-- <script type="text/javascript" src="script/script.js"></script> -->
+    <script type="text/javascript" src="script/script2.js"></script>
 <!--     <script src="script/model.js"></script>
     <script src="script/view.js"></script>
     <script src="script/controller.js"></script>
