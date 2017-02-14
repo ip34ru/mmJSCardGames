@@ -145,6 +145,7 @@
     <!-- build:js js/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script> -->
     <script src="bower_components/jqueryui/jquery-ui.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endbower -->
@@ -679,21 +680,13 @@
                                                     <!-- Card Content Rendered Here -->
                                                 </div>
                                             {{else}}
-                                                <!-- MIDDLE LARGE SCREENS -->
-                                                <div class="col-md-8 col-lg-8 hidden-xs hidden-sm
+                                                <!-- ALL SCREENS -->
+                                                <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8
                                                     masonry-grid-item
                                                     mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
                                                     <!-- Card Content Rendered Here -->
                                                 </div>
-                                                <!-- MIDDLE LARGE SCREENS -->
-
-                                                <!-- XTRASMALL SMALL SCREENS -->
-                                                <div class="col-xs-12 col-sm-6 hidden-md hidden-lg
-                                                    masonry-grid-item
-                                                    mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
-                                                    <!-- Card Content Rendered Here -->
-                                                </div>
-                                                <!-- XTRASMALL SMALL SCREENS -->
+                                                <!-- ALL SCREENS -->
 
                                             {{/if}}
 
@@ -729,21 +722,13 @@
 
                                             {{#if @index}}
 
-                                                <!-- MIDDLE LARGE SCREENS -->
-                                                <div class="col-md-8 col-lg-8 hidden-xs hidden-sm
+                                                <!-- ALL SCREENS -->
+                                                <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8
                                                     masonry-grid-item
                                                     mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
                                                     <!-- Card Content Rendered Here -->
                                                 </div>
-                                                <!-- MIDDLE LARGE SCREENS -->
-
-                                                <!-- XTRASMALL SMALL SCREENS -->
-                                                <div class="col-xs-12 col-sm-6 hidden-md hidden-lg
-                                                    masonry-grid-item
-                                                    mm__mainpage_mainribbon_section--padding-lr-10 container_card_{{@index}}">
-                                                    <!-- Card Content Rendered Here -->
-                                                </div>
-                                                <!-- XTRASMALL SMALL SCREENS -->
+                                                <!-- ALL SCREENS -->
 
                                             {{else}}
 
@@ -784,23 +769,14 @@
                                     <div class="row masonry-grid-fitrows grid-space-10">
 
                                         {{#each cards}}
-                                            <!-- SMALL MIDDLE LARGE SCREENS -->
-                                            <div class="col-sm-12 col-md-12 col-lg-12 hidden-xs
+                                            <!-- ALL SCREENS -->
+                                            <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12
                                                 masonry-grid-item
                                                 mm__mainpage_mainribbon_card--full-width container_card_{{@index}}">
                                                 <!-- Card Content Rendered Here -->
                                             </div>
-                                            <!-- SMALL MIDDLE LARGE SCREENS -->
-
-                                            <!-- XTRASMALL SCREENS -->
-                                            <div class="col-xs-12 hidden-sm hidden-md hidden-lg
-                                                masonry-grid-item
-                                                mm__mainpage_mainribbon_card--full-width container_card_{{@index}}">
-                                                <!-- Card Content Rendered Here -->
-                                            </div>
-                                            <!-- XTRASMALL SCREENS -->
+                                            <!-- ALL SCREENS -->
                                         {{/each}}
-
 
                                     </div>
                                 </div>
@@ -819,11 +795,19 @@
     <script type="text/x-handlebars-template" id="cardTemplate">
         <div class="listing-item white-bg bordered mb-10 ">
             <div class="overlay-container">
-                <img src="img/temp-lorpix/lor-4-1.jpg" alt="" class="center-block">
+                {{#if mode.one }}
+                    <img src="img/temp-lorpix/lorpix-girl-900px.jpg" alt="" class="center-block hidden-xs" width="1144">
+                    <img src="img/temp-lorpix/lor-4-1.jpg" alt="" class="center-block hidden-sm hidden-md hidden-lg">
+                {{else}}
+                    {{#if mode.two }}
+                        <img src="img/temp-lorpix/lor-8-1.jpg" alt="" class="center-block" width="1144">
+                    {{else}}
+                        <img src="img/temp-lorpix/lor-4-1.jpg" alt="" class="center-block">
+                    {{/if}}
+                {{/if}}
                 <a class="overlay-link popup-img-single" href="http://lorempixel.com/370/210/food/1/"><i class="fa fa-search-plus"></i></a>
-                <span class="badge mm__mainpage__common_badge--competition">
-                    <!-- TODO учесть добаление каждому своей иконки -->
-                    <i class="fa fa-trophy"></i> {{badge.title}}
+                <span class="badge {{content_type.class}}">
+                    <i class="fa {{content_type.icon}}"></i> {{data.badge.title}}
                 </span>
                 <div class="overlay-to-top links">
                     <span class="small">
@@ -833,8 +817,8 @@
                 </div>
             </div>
             <div class="body">
-                <h3><a href="{{url}}">{{title}}</a></h3>
-                <p class="small">{{teaser}}</p>
+                <h3><a href="{{data.url}}">{{data.title}}</a></h3>
+                <p class="small">{{data.teaser}}</p>
                 <div class="elements-list clearfix">
                     <span class="price"><del>$100.00</del> $70.00</span>
                     <a href="#" class="pull-right margin-clear btn btn-sm btn-default-transparent btn-animated">Add To Cart<i class="fa fa-shopping-cart"></i></a>
