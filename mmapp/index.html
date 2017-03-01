@@ -805,14 +805,14 @@
                         <img src="img/temp-lorpix/lor-4-1.jpg" alt="" class="center-block">
                     {{/if}}
                 {{/if}}
-                <a class="overlay-link popup-img-single" href="http://lorempixel.com/370/210/food/1/"><i class="fa fa-search-plus"></i></a>
+                <!-- <a class="overlay-link popup-img-single" href="{{data.url}}"><i class="fa fa-link"></i></a> -->
                 <span class="badge {{content_type.class}}">
                     <i class="fa {{content_type.icon}}"></i> {{data.badge.title}}
                 </span>
                 <div class="overlay-to-top links">
                     <span class="small">
-                        <a href="javasript:void(0);" class="btn-sm-link add-to-favorite"><i class="fa fa-heart-o pr-10"></i>Add to Wishlist</a>
-                        <a href="javasript:void(0);" class="btn-sm-link"><i class="icon-link pr-5"></i>View Details</a>
+                        <a href="javasript:void(0);" class="btn-sm-link add-to-favorite"><i class="fa fa-heart-o pr-10"></i>В избранное</a>
+                        <a href="{{data.url}}" class="btn-sm-link"><i class="icon-link pr-5"></i>Подробнее</a>
                     </span>
                 </div>
             </div>
@@ -820,8 +820,7 @@
                 <h3><a href="{{data.url}}">{{data.title}}</a></h3>
                 <p class="small">{{data.teaser}}</p>
                 <div class="elements-list clearfix">
-                    <span class="price"><del>$100.00</del> $70.00</span>
-                    <a href="#" class="pull-right margin-clear btn btn-sm btn-default-transparent btn-animated">Add To Cart<i class="fa fa-shopping-cart"></i></a>
+                    <a href="{{data.url}}" class="pull-right margin-clear btn btn-sm btn-default-transparent btn-animated">Подробнее<i class="fa fa-long-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -847,7 +846,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <p class="mt-10">
-                                        <a href="#" class="btn btn-animated btn-lg mm__mainpage_mainribbon_more-button-transparent ">
+                                        <a href="javasript:void(0);" class="btn btn-animated btn-lg mm__mainpage_mainribbon_more-button-transparent " id="btnMoreCards">
                                             Еще<i class="fa fa-refresh pl-20"></i>
                                         </a>
                                     </p>
@@ -877,8 +876,8 @@
     <!-- HandlebarsJS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
     <!-- CustomJS -->
-    <!-- <script type="text/javascript" src="script/script.js"></script> -->
-    <script type="text/javascript" src="script/script2.js"></script>
+    <script type="text/javascript" src="script/script.js"></script> 
+<!--     <script type="text/javascript" src="script/script2.js"></script> -->
 <!--     <script src="script/model.js"></script>
     <script src="script/view.js"></script>
     <script src="script/controller.js"></script>

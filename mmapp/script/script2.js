@@ -1,30 +1,33 @@
+let cardTemplate = Handlebars.compile($('#cardTemplate').html(), {noEscape: true});
+let rowTemplate = Handlebars.compile($('#rowTemplate').html(), {noEscape: true});
+let cardsRollupTemplate = Handlebars.compile($('#dashboardTemplate').html(), {noEscape: true});
 
 let CONTENT_TYPE = {
-                        article: {
-                            class: 'mm__mainpage__common_badge--article',
-                            icon: 'fa-file-text-o'
-                        },
-                        blog: {
-                            class: 'mm__mainpage__common_badge--blog',
-                            icon: 'fa-pencil-square-o'
-                        },
-                        competition: {
-                            class: 'mm__mainpage__common_badge--competition',
-                            icon: 'fa-trophy'
-                        },
-                        consultation: {
-                            class: 'mm__mainpage__common_badge--consultation',
-                            icon: 'fa-university'
-                        },
-                        advertising: {
-                            class: 'mm__mainpage__common_badge--advertising',
-                            icon: 'fa-file-text-o'
-                        },
-                        forum: {
-                            class: 'mm__mainpage__common_badge--forum',
-                            icon: 'fa-comments-o'
-                        }
-                    };
+    article: {
+        class: 'mm__mainpage__common_badge--article',
+        icon: 'fa-file-text-o'
+    },
+    blog: {
+        class: 'mm__mainpage__common_badge--blog',
+        icon: 'fa-pencil-square-o'
+    },
+    competition: {
+        class: 'mm__mainpage__common_badge--competition',
+        icon: 'fa-trophy'
+    },
+    consultation: {
+        class: 'mm__mainpage__common_badge--consultation',
+        icon: 'fa-university'
+    },
+    advertising: {
+        class: 'mm__mainpage__common_badge--advertising',
+        icon: 'fa-file-text-o'
+    },
+    forum: {
+        class: 'mm__mainpage__common_badge--forum',
+        icon: 'fa-comments-o'
+    }
+};
 
 /*
  * Базовый класс для элементов
@@ -35,7 +38,7 @@ class BaseElement {
      * @param templateId Идентификатор шаблона
      * @param element элемент, в который все оборачивается
      */
-    constructor(templateId, element = 'div') {
+    constructor(template, element = 'div') {
         /**
          * Элемент, в который оборачивается виджет
          * @type {Element}
@@ -43,11 +46,11 @@ class BaseElement {
         this.el = document.createElement(element);
         //небольшой хелпер
         this.$el = $(this.el);
-        let templateSource = $(`#${templateId}`).html();
+
         /**
          * Шаблон элемента
          */
-        this.template = Handlebars.compile(templateSource, {noEscape: true});
+        this.template = template
     }
 
     /**
@@ -68,19 +71,19 @@ class BaseElement {
         return {}
     }
 
-    render(revertToChild=false) {
+    render(revertToChild = false) {
         this.$el.html(this.template(this.contextData));
-        if(revertToChild){
-          this.el = this.el.firstElementChild;
-          this.$el = $(this.el);
+        if (revertToChild) {
+            this.el = this.el.firstElementChild;
+            this.$el = $(this.el);
         }
         this.setupListeners();
     }
 }
 
 class Card extends BaseElement {
-    constructor(data, mode, templateId = 'cardTemplate') {
-        super(templateId);
+    constructor(data, mode, template = cardTemplate) {
+        super(template);
         this.data = data;
         this.mode = mode;
         this.render(true);
@@ -101,13 +104,13 @@ class Card extends BaseElement {
         this.$('.add-to-favorite').on('click', ()=> {
             this.setFavorite();
         });
-        $(window).resize( $.proxy(this.onResizeCard, this)  ).trigger('resize');
+        $(window).resize($.proxy(this.onResizeCard, this)).trigger('resize');
         // this.$el.on( 'resize', $.proxy(this.onResizeCard, this)  );
     }
 
-    height( newHeight ) {
-        if ( newHeight ) {
-            if ( this.$el.height() === newHeight ) {
+    height(newHeight) {
+        if (newHeight) {
+            if (this.$el.height() === newHeight) {
                 return;
             }
             this.$el.height(newHeight);
@@ -119,12 +122,12 @@ class Card extends BaseElement {
 
     resizeCard() {
         //TODO косяк с размерами двойных карточек http://joxi.ru/gmv3gZ7iLM6YZ2
-        if ( this.mode !== 'two' ) {
+        if (this.mode !== 'two') {
             return;
         }
 
-        if ( this.timeoutResize ) {
-            clearTimeout( this.timeoutResize );
+        if (this.timeoutResize) {
+            clearTimeout(this.timeoutResize);
             this.timeoutResize = undefined;
         }
 
@@ -132,22 +135,22 @@ class Card extends BaseElement {
         let currentrCardOverlayContaineHeight = this.$('.overlay-container').height();
         let currentCardBodyHeight = this.$('.body').height();
         let needMarginBottom = currentCardHeight - currentrCardOverlayContaineHeight - currentCardBodyHeight + 15;
-        this.$('p.small').css({'margin-bottom': needMarginBottom + 'px' });
-        console.log('==============~!!!!!!!!!!!!!!!!!~==================', currentCardHeight );
+        this.$('p.small').css({'margin-bottom': needMarginBottom + 'px'});
+        // console.log('==============~!!!!!!!!!!!!!!!!!~==================', currentCardHeight);
     }
 
     onResizeCard() {
 
-        if ( this.mode !== 'two' ) {
+        if (this.mode !== 'two') {
             return;
         }
 
-        if ( this.timeoutResize ) {
-            clearTimeout( this.timeoutResize );
+        if (this.timeoutResize) {
+            clearTimeout(this.timeoutResize);
             this.timeoutResize = undefined;
         }
 
-        this.timeoutResize = setTimeout( () => {
+        this.timeoutResize = setTimeout(() => {
                 this.resizeCard();
             }, 50
         );
@@ -157,16 +160,17 @@ class Card extends BaseElement {
 
     setFavorite() {
         // this.$('.card').addClass('card-inverse card-info');
-        console.log('Карточка добавлена в избранное');
+        // console.log('Карточка добавлена в избранное');
     }
 } // Card
 
 class Row extends BaseElement {
-    constructor(cardsDataList, mode, templateId = 'rowTemplate') {
-        super(templateId);
+    constructor(cardsDataList, mode, template = rowTemplate) {
+        super(template);
         this._cardsDataList = cardsDataList;
         this._mode = mode;
         this._cards = [];
+        this.loadedCards = [];
         this.loadCards(cardsDataList);
         this.render(true);
     }
@@ -182,32 +186,32 @@ class Row extends BaseElement {
     }
 
     setupListeners() {
-        $(window).resize( $.proxy(this.onResizeWindow, this)  ).trigger('resize');
+        $(window).resize($.proxy(this.onResizeWindow, this)).trigger('resize');
     }
 
 
     onResizeWindow() {
 
-        if ( this._cards.length !== 2 ) {
+        if (this._cards.length !== 2) {
             return;
         }
 
-        if ( this.timeoutResize ) {
-            clearTimeout( this.timeoutResize );
+        if (this.timeoutResize) {
+            clearTimeout(this.timeoutResize);
             this.timeoutResize = undefined;
         }
 
-        this.timeoutResize = setTimeout( () => {
+        this.timeoutResize = setTimeout(() => {
                 let mostHightCard = 0;
 
 
 
                 for (let card of this._cards) {
                     card.height('auto');
-                    mostHightCard = (card.height() > mostHightCard) ? card.height() : mostHightCard ;
+                    mostHightCard = (card.height() > mostHightCard) ? card.height() : mostHightCard;
                 }
 
-                if ( mostHightCard === 0 ) {
+                if (mostHightCard === 0) {
                     return;
                 }
 
@@ -225,47 +229,64 @@ class Row extends BaseElement {
     } // onResizeWindow
 
     loadCards(cards) {
+        let loadCard = undefined;
         switch (this._mode) {
             case 'one':
                 if (cards.length < 0) {
                     throw 'Insufficient cards';
                 }
-                this._cards.push(new Card(cards.shift(), 'one'));
+                loadCard = cards.shift();
+                this.loadedCards.push(loadCard);
+                this._cards.push(new Card(loadCard, 'one'));
                 break;
             case 'three':
                 if (cards.length < 3) {
                     throw 'Insufficient cards';
                 }
-                this._cards.push(new Card(cards.shift(), 'three'));
-                this._cards.push(new Card(cards.shift(), 'three'));
-                this._cards.push(new Card(cards.shift(), 'three'));
+                for (let i = 0; i < 3; ++i) {
+                    loadCard = cards.shift();
+                    this.loadedCards.push(loadCard);
+                    this._cards.push(new Card(loadCard, 'three'));
+                }
+
                 break;
             case 'twoRight':
                 if (cards.length < 2) {
                     throw 'Insufficient cards';
                 }
-                this._cards.push(new Card(cards.shift(), 'three'));
-                this._cards.push(new Card(cards.shift(), 'two'));
+                loadCard = cards.shift();
+                this.loadedCards.push(loadCard);
+                this._cards.push(new Card(loadCard, 'three'));
+                loadCard = cards.shift();
+                this.loadedCards.push(loadCard);
+                this._cards.push(new Card(loadCard, 'two'));
+
                 break;
             case 'twoLeft':
                 if (cards.length < 2) {
                     throw 'Insufficient cards';
                 }
-                this._cards.push(new Card(cards.shift(), 'two'));
-                this._cards.push(new Card(cards.shift(), 'three'));
+                loadCard = cards.shift();
+                this.loadedCards.push(loadCard);
+                this._cards.push(new Card(loadCard, 'two'));
+
+                loadCard = cards.shift();
+                this.loadedCards.push(loadCard);
+                this._cards.push(new Card(loadCard, 'three'));
                 break;
             default:
                 if (cards.length < 3) {
                     throw 'Insufficient cards';
                 }
-                this._cards.push(new Card(cards.shift(), 'three'));
-                this._cards.push(new Card(cards.shift(), 'three'));
-                this._cards.push(new Card(cards.shift(), 'three'));
-                break;
+                for (let i = 0; i < 3; ++i) {
+                    loadCard = cards.shift();
+                    this.loadedCards.push(loadCard);
+                    this._cards.push(new Card(loadCard, 'three'));
+
+                }
+            break;
+
         }
-
-        window.cards = this._cards;
-
     }
 
     render() {
@@ -274,16 +295,51 @@ class Row extends BaseElement {
             this.$(`.container_card_${cardIndex}`).html(this._cards[cardIndex].el);
         }
     }
-} // Row
+}
+// Row
 
 class CardDashBoard extends BaseElement {
-    constructor(dataList, templateId = 'dashboardTemplate') {
-        super(templateId);
-        this.dataList = dataList;
+    get API_URL() {
+        // TODO на продакшене свой отдельный урл
+        return 'https://gist.githubusercontent.com/kostnikolas/d19ca24959ea93b20d132c886ac3e272/raw/7473fd8091fcf2219f53ce15810606e9c66f9912/TestResource';
+    }
+
+    get API_PARAM() {
+        return 'page';
+    }
+
+    get DEBUG() {
+        return true;
+    }
+
+;
+    get TIMEOUT() {
+        let timeout = new Date();
+        timeout.setHours(0);
+        timeout.setMinutes(5);
+        timeout.setSeconds(30);
+        return timeout.getTime();
+    }
+
+    constructor(template = cardsRollupTemplate) {
+        super(template);
         this.patterns = ['', 'three', '', 'three', '', 'three'];
-        this.purePatterns = ['one', 'twoLeft', 'twoRight' ];
+        this.purePatterns = ['one', 'twoLeft', 'twoRight'];
+        //строки
         this.rows = [];
-        this.loadRows(dataList);
+        //оставшиеся карточки
+        this.remainingCards = [];
+        //все карточки, отображенные на странице
+        this.loadedCards = [];
+        //текущая страница для запроса на бекенд
+        this.currentPage = 0;
+        this.render();
+        this.getData(true);
+
+    }
+
+    get requestUrl() {
+        return `${this.API_URL}?${this.API_PARAM}=${this.currentPage}`
     }
 
     get randomizeCardsPattern() {
@@ -303,23 +359,20 @@ class CardDashBoard extends BaseElement {
         return tempArray;
     }
 
-    loadRows(items) {
-
+    parseRows(items) {
         let patternId = 0;
         let randomPatterns = this.randomizeCardsPattern;
         let cardsRollup;
 
-        this.$el.html(this.template({}));
+
         cardsRollup = this.$('#cardsRollup');
 
 
-        console.log('randomPatterns =', randomPatterns);
         while (items.length > 0) {
             try {
                 let row = new Row(items, randomPatterns[patternId]);
-
-                // this.$el.append(row.el.firstElementChild);
-                this.rows.push(row);
+                this.loadedCards = this.loadedCards.concat(row.loadedCards);
+                // console.log(row.loadedCards);
                 cardsRollup.append(row.el);
             }
             catch (e) {
@@ -330,9 +383,45 @@ class CardDashBoard extends BaseElement {
                 patternId = 0;
             }
         }
-        //Принтим оставшиеся элементы
-        this.setupListeners();
-        console.log(items);
+        this.remainingCards = this.remainingCards.concat(items);
+    }
+
+    getData(firstLoad = false) {
+        ++this.currentPage;
+        $.ajax(this.requestUrl, {method: 'GET'}).then(
+            (response)=> {
+                if (this.DEBUG) {
+                    response = JSON.parse(response);
+                }
+                if (firstLoad) {
+                    this.lastLoadTime = new Date();
+                    this.parseRows(response);
+                }
+                else {
+                    this.successRequest(response);
+                }
+            },
+            (response)=> {
+                this.failRequest(response);
+            });
+    }
+
+    successRequest(data) {
+        //проверям карточки на дубли
+        //конкатенируем с this.remainingCards
+
+        this.parseRows(data);
+    }
+
+    clearData() {
+        this.currentPage = 0;
+        this.remainingCards = [];
+        this.loadedCards = [];
+        //чистим все
+    }
+
+    failRequest(data) {
+        // console.log(data);
     }
 
     setupListeners() {
@@ -342,545 +431,15 @@ class CardDashBoard extends BaseElement {
     }
 
     getMoreCards() {
-      console.log('Сейчас загружу еще карточки');
+        let nowTime = new Date();
+        let deltaTime = new Date(nowTime - this.lastLoadTime);
+        if (deltaTime.getTime() > this.TIMEOUT) {
+            this.clearData();
+        }
+        this.getData();
     }
 
-} // CardDashBoard
+}
 
-
-let cardList = [
-    {
-        'content_id': '1',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':365,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':3,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '2',
-        'content_type': 'blog',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':45,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Блог'},
-        'card':{
-            'size':2,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '31',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':65,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':1,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '41',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':35,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':2,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '221',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':11,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':1,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '21',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':200,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':2,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '1',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':276,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':1,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '71',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':36,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':1,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '81',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':11,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':1,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '91',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':34,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':3,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '111',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':98,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':1,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '221',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':43,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':2,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    },
-    {
-        'content_id': '21',
-        'content_type': 'article',
-        'title': 'Выбор коляски для малыша',
-        'teaser': 'Как выбрать детскую коляску? – спрашивают неопытные родители. Ответ прост – учитывайте предпочтения мамы...',
-        'master_image': '/media/original_image.jpg',
-        'url':'/articles/4235-vibor-kolyaski-dlya-malisha/',
-        'author': {
-            'name': 'Ализаровна',
-            'avatar': '/media/avatars/alizar_face.jpg',
-            'url': '/users/alizar_woman',
-            'rating': 150,
-            'karma': 10
-        },
-        'created': 1486647934,
-        'updated': 1486648934,
-        'vote_count': 32,
-        'view_count': 89,
-        'allow_comments':true,
-        'comments_count': 20,
-        'weight':72,
-        'tags':[{'name':'Коляска', 'url':'/articles/tags/kolyaska'}],
-        'seo': {
-            'keywords': 'Выбор коляски, Ализаровна советует, Коляска'
-        },
-        'badge':{'title':'Статья'},
-        'card':{
-            'size':1,
-            'images':[
-                {
-                    'size':1,
-                    'url':'/media/articles/cards/card_1_size.jpg'
-                },
-                {
-                    'size':3,
-                    'url':'/media/articles/cards/card_3_size.jpg'
-                }
-            ]
-        }
-    }
-
-];
-
-
-
-
-let dashBoard = new CardDashBoard(cardList);
+let dashBoard = new CardDashBoard();
 $('#cardContainer').html(dashBoard.el);
-
-
-//TODO переписать функционал получения с бекэнда
-//TODO обновления карточек (если таймаут большой, то обновляетсмя информация в существующих, т.е. загрузка с бекэндап начинается сначала)
-//TODO функционал учета таймаутов
-//TODO написать функционал который будет резать длину строки тизера, в зависимости от размера крточки
-//TODO когда картиочка одна, то нужно придумать, как сделать так, чтоб она рендерилась в два местап с разной версткой
